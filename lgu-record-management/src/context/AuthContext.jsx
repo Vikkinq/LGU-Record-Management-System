@@ -12,26 +12,26 @@ export const AuthProvider = ({ children }) => {
   const [userRole, setUserRole] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const unsubscribe = onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      setCurrentUser(user);
+      // Fetch role again to ensure session persistence
+      const userDoc = await getDoc(doc(db, "users", user.uid));
+      if (userDoc.exists()) {
+        setUserRole(userDoc.data().role);
+      } else {
+        setUserRole("staff");
+      }
+    } else {
+      setCurrentUser(null);
+      setUserRole(null);
+    }
+    setLoading(false);
+  });
+
   useEffect(() => {
     // Listen for login state changes
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        setCurrentUser(user);
-        // Fetch role again to ensure session persistence
-        const userDoc = await getDoc(doc(db, "users", user.uid));
-        if (userDoc.exists()) {
-          setUserRole(userDoc.data().role);
-        } else {
-          setUserRole("staff");
-        }
-      } else {
-        setCurrentUser(null);
-        setUserRole(null);
-      }
-      setLoading(false);
-    });
-
-    return unsubscribe;
+    return unsubscribe();
   }, []);
 
   const value = { currentUser, userRole, loading };
