@@ -21,7 +21,6 @@ export default function LoginPage() {
 
     try {
       await loginWithEmail(email, password);
-
       navigate("/");
     } catch (err) {
       console.error(err);
