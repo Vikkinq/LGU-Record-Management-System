@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { loginUser } from "../../services/auth.services";
+import { loginWithEmail } from "../../services/auth.services";
+import { createUserProfile } from "../../services/user.services";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -19,11 +20,12 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      await loginUser(email, password);
-      navigate("/", { replace: true });
+      await loginWithEmail(email, password);
+
+      navigate("/");
     } catch (err) {
       console.error(err);
-      setError("Invalid email or password");
+      setError(err.message || "Invalid credentials");
     } finally {
       setLoading(false);
     }

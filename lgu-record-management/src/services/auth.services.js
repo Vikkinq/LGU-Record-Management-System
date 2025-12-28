@@ -1,28 +1,39 @@
 import { auth, db } from "../firebase/firebase";
-import { signInWithEmailAndPassword, signOut } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
 
-// Login function: Signs in AND fetches the user role (Admin vs Staff)
-export const loginUser = async (email, password) => {
-  try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
+export const registerUser = async (email, password, fullName, role = "staff") => {
+  const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+  const user = userCredential.user;
 
-    // Check Firestore for the user's role
-    const userDoc = await getDoc(doc(db, "users", user.uid));
-    let role = "staff"; // Default role if none is found
+  // Create Firestore profile if not exists
+  const userRef = doc(db, "users", user.uid);
+  const snap = await getDoc(userRef);
 
-    if (userDoc.exists()) {
-      role = userDoc.data().role;
-    }
-
-    return { user, role };
-  } catch (error) {
-    console.error("Login Error:", error.message);
-    throw error;
+  if (!snap.exists()) {
+    await setDoc(userRef, {
+      email,
+      fullName,
+      role,
+      provider: "email",
+      createdAt: serverTimestamp(),
+    });
   }
+
+  return user;
 };
 
-export const logoutUser = () => {
-  return signOut(auth);
+export const loginWithEmail = async (email, password) => {
+  const userCredentials = await signInWithEmailAndPassword(auth, email, password);
+  return userCredentials.user;
+};
+
+export const logoutUser = async () => {
+  try {
+    if (!window.confirm("Are you sure you want to logout?")) return;
+    await signOut(auth);
+  } catch (err) {
+    console.error("Logout failed:", err);
+    alert("Cannot logout");
+  }
 };

@@ -1,12 +1,9 @@
 /**
- * User Profile Model
- * Represents an authenticated user stored in Firestore
- *
  * @typedef {Object} UserProfile
  * @property {string} uid - Firebase Auth UID
  * @property {string} email - User email
  * @property {"admin" | "staff"} role - User role / access level
- * @property {string} createdAt - ISO timestamp of creation
+ * @property {any} createdAt - Firestore timestamp
  */
 export const UserProfileModel = {
   uid: "",
