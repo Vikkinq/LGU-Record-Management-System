@@ -1,24 +1,24 @@
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
-const ProtectedRoute = ({ children, allowedRoles }) => {
+export default function ProtectedRoute({ children, allowedRoles }) {
   const { currentUser, userRole, loading } = useAuth();
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <p className="text-gray-500">Loading...</p>
+      </div>
+    );
+  }
 
-  // 1. Check if user is logged in
   if (!currentUser) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/login" replace />;
   }
 
-  // 2. Check if user has the correct role (if roles are specified)
   if (allowedRoles && !allowedRoles.includes(userRole)) {
-    alert("Access Denied: You do not have permission to view this page.");
     return <Navigate to="/" replace />;
   }
 
-  // 3. If passed, render the page
   return children;
-};
-
-export default ProtectedRoute;
+}
