@@ -1,10 +1,17 @@
 import { LogOut, Settings, Plus } from "lucide-react";
+import { logoutUser } from "../../services/auth.services";
 
 export default function Sidebar({ activeMenu, setActiveMenu, sidebarOpen, onAddRecord }) {
   const menuItems = [
     { id: "ordinances", label: "Ordinances", icon: "📋" },
     { id: "resolutions", label: "Resolutions", icon: "📄" },
   ];
+
+  // 2. THE HANDLER
+  const handleLogout = async () => {
+    await logoutUser();
+
+  };
 
   return (
     <aside className="fixed left-0 top-0 h-screen w-64 bg-slate-600 text-white pt-20 z-30 flex flex-col">
@@ -46,7 +53,11 @@ export default function Sidebar({ activeMenu, setActiveMenu, sidebarOpen, onAddR
 
         {/* Bottom Actions */}
         <div className="flex gap-2">
-          <button className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 transition-colors text-sm">
+          {/* 3. ATTACH THE ONCLICK EVENT */}
+          <button 
+            onClick={handleLogout}
+            className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 transition-colors text-sm"
+          >
             <LogOut className="w-4 h-4" />
             Logout
           </button>

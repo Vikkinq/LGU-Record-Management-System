@@ -1,0 +1,55 @@
+Eury 12/29/2025:
+
+1. New Features Added
+Edit Functionality (Update): Users can now click a "Pencil" icon to modify an existing record’s details (Title, Sponsor, etc.) or replace the uploaded file entirely.
+
+Delete Functionality (Delete): Users can click a "Trash" icon to permanently remove a record from both the Database and Storage.
+
+File Validation: Restricted uploads to only allow PDF, DOC, and DOCX files, blocking images or other types.
+
+Expiry Date: Added a new column and data field to track when an ordinance or resolution expires.
+
+Empty State: Improved the table so it looks good even when there is no data (shows a "No records found" message).
+
+2. Files Created & Modified
+A. New File Created
+src/components/Modal/EditRecordModal.jsx: A new modal component that pre-fills with existing data and allows users to save changes or replace the document.
+
+B. Files Modified
+src/pages/MainPage.jsx
+
+Added handleEditClick and handleUpdateRecord functions.
+
+Implemented logic to upload a replacement file if the user selects a new one during editing.
+
+Added the logic to delete the raw file object from the data before saving to preventing database crashes.
+
+Connected the Edit Modal to the page.
+
+src/components/Main/MainTable.jsx
+
+Added the Pencil (Edit) and Trash (Delete) icons.
+
+Implemented handleDelete to remove data from Firestore and Storage.
+
+Updated to accept and use the onEdit prop.
+
+Added the Expiry Date column.
+
+src/components/Main/MainContent.jsx
+
+Updated to act as a "middleman," passing the onEdit prop from MainPage down to MainTable.
+
+src/components/Modal/AddRecordModal.jsx
+
+Added validateFile function to check file types.
+
+Updated input to accept only .pdf, .doc, .docx.
+
+src/services/file.services.js
+
+Added updateFileRecord function to handle saving changes to Firestore.
+
+Consolidated imports to fix the SyntaxError.
+
+Ensured file replacement logic updates the fileUrl and fileName in the database.

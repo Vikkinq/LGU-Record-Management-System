@@ -1,10 +1,10 @@
 import MainTable from "./MainTable";
 
-export default function MainContent({ searchQuery, sortBy, filters, activeMenu }) {
+export default function MainContent({ searchQuery, sortBy, filters, activeMenu, onEdit }) {
   return (
     <main className="flex-1 ml-64 mt-20 overflow-auto p-6">
       <div className="bg-white rounded-lg shadow">
-        <MainTable searchQuery={searchQuery} sortBy={sortBy} filters={filters} activeMenu={activeMenu} />
+        <MainTable searchQuery={searchQuery} sortBy={sortBy} filters={filters} activeMenu={activeMenu} onEdit={onEdit} />
       </div>
     </main>
   );
