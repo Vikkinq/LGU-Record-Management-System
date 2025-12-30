@@ -28,7 +28,7 @@ export default function LoginPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }; 
 
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-700 via-slate-600 to-slate-800 flex items-center justify-center p-4">

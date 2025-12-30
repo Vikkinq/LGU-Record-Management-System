@@ -12,9 +12,13 @@ export default function ProtectedRoute({ children, allowedRoles }) {
     );
   }
 
-  if (!currentUser) {
-    return <Navigate to="/login" replace />;
-  }
+  if (loading) {
+  return <div>Loading session...</div>; // show spinner or placeholder
+}
+
+if (!currentUser) {
+  return <Navigate to="/login" />;
+}
 
   if (allowedRoles && !allowedRoles.includes(userRole)) {
     return <Navigate to="/" replace />;

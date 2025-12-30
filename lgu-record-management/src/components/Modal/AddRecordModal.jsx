@@ -25,7 +25,7 @@ export default function AddRecordModal({ isOpen, onClose, onSubmit, isLoading })
   // 2. Create Validation Function
   const validateFile = (file) => {
     const validTypes = Object.values(ALLOWED_FILE_TYPES);
-    
+
     // Check if the file type matches our allowed list
     if (!validTypes.includes(file.type)) {
       alert(`File "${file.name}" is not supported.\nPlease upload PDF, DOC, or DOCX files only.`);
@@ -37,7 +37,7 @@ export default function AddRecordModal({ isOpen, onClose, onSubmit, isLoading })
   // 3. Update File Handler to filter invalid files
   const handleFiles = (selectedFiles) => {
     const newFiles = Array.from(selectedFiles).filter(validateFile);
-    
+
     if (newFiles.length > 0) {
       setFiles((prev) => [...prev, ...newFiles]);
     }
@@ -65,7 +65,7 @@ export default function AddRecordModal({ isOpen, onClose, onSubmit, isLoading })
       date,
       sponsor,
       committee,
-      expiryDate
+      expiryDate,
     });
 
     // Reset Form
@@ -82,7 +82,6 @@ export default function AddRecordModal({ isOpen, onClose, onSubmit, isLoading })
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full border border-slate-200 flex flex-col max-h-[90vh]">
-        
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 shrink-0">
           <h2 className="text-xl font-bold text-slate-800">Add New Record</h2>
@@ -94,7 +93,6 @@ export default function AddRecordModal({ isOpen, onClose, onSubmit, isLoading })
         {/* Scrollable Form Area */}
         <div className="overflow-y-auto p-6 space-y-6">
           <form id="add-record-form" onSubmit={handleSubmit} className="space-y-6">
-            
             {/* 1. Category Selection */}
             <div>
               <label className="block text-sm font-semibold text-slate-700 mb-2">Category</label>
@@ -114,9 +112,9 @@ export default function AddRecordModal({ isOpen, onClose, onSubmit, isLoading })
                 <label className="block text-sm font-semibold text-slate-700 mb-2">{labelPrefix} Number</label>
                 <div className="relative">
                   <Hash className="absolute left-3 top-2.5 w-4 h-4 text-slate-400" />
-                  <input 
+                  <input
                     required
-                    type="text" 
+                    type="text"
                     placeholder="e.g. 2024-001"
                     value={number}
                     onChange={(e) => setNumber(e.target.value)}
@@ -128,9 +126,9 @@ export default function AddRecordModal({ isOpen, onClose, onSubmit, isLoading })
                 <label className="block text-sm font-semibold text-slate-700 mb-2">{labelPrefix} Title</label>
                 <div className="relative">
                   <Type className="absolute left-3 top-2.5 w-4 h-4 text-slate-400" />
-                  <input 
+                  <input
                     required
-                    type="text" 
+                    type="text"
                     placeholder={`Enter ${labelPrefix} Title`}
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
@@ -146,9 +144,9 @@ export default function AddRecordModal({ isOpen, onClose, onSubmit, isLoading })
                 <label className="block text-sm font-semibold text-slate-700 mb-2">Date Approved</label>
                 <div className="relative">
                   <Calendar className="absolute left-3 top-2.5 w-4 h-4 text-slate-400" />
-                  <input 
+                  <input
                     required
-                    type="date" 
+                    type="date"
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
                     className="w-full pl-9 pr-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
@@ -159,8 +157,8 @@ export default function AddRecordModal({ isOpen, onClose, onSubmit, isLoading })
                 <label className="block text-sm font-semibold text-slate-700 mb-2">Expiry Date (Optional)</label>
                 <div className="relative">
                   <Calendar className="absolute left-3 top-2.5 w-4 h-4 text-red-300" />
-                  <input 
-                    type="date" 
+                  <input
+                    type="date"
                     value={expiryDate}
                     onChange={(e) => setExpiryDate(e.target.value)}
                     className="w-full pl-9 pr-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
@@ -175,9 +173,9 @@ export default function AddRecordModal({ isOpen, onClose, onSubmit, isLoading })
                 <label className="block text-sm font-semibold text-slate-700 mb-2">Sponsor</label>
                 <div className="relative">
                   <User className="absolute left-3 top-2.5 w-4 h-4 text-slate-400" />
-                  <input 
+                  <input
                     required
-                    type="text" 
+                    type="text"
                     placeholder="e.g. Hon. Juan Dela Cruz"
                     value={sponsor}
                     onChange={(e) => setSponsor(e.target.value)}
@@ -189,9 +187,9 @@ export default function AddRecordModal({ isOpen, onClose, onSubmit, isLoading })
                 <label className="block text-sm font-semibold text-slate-700 mb-2">Committee</label>
                 <div className="relative">
                   <Users className="absolute left-3 top-2.5 w-4 h-4 text-slate-400" />
-                  <input 
+                  <input
                     required
-                    type="text" 
+                    type="text"
                     placeholder="e.g. Committee on Rules"
                     value={committee}
                     onChange={(e) => setCommittee(e.target.value)}
@@ -205,19 +203,29 @@ export default function AddRecordModal({ isOpen, onClose, onSubmit, isLoading })
             <div>
               <label className="block text-sm font-semibold text-slate-700 mb-2">Upload Document (PDF/Word)</label>
               <div
-                onDragEnter={(e) => { e.preventDefault(); setDragActive(true); }}
-                onDragLeave={(e) => { e.preventDefault(); setDragActive(false); }}
-                onDragOver={(e) => { e.preventDefault(); }}
+                onDragEnter={(e) => {
+                  e.preventDefault();
+                  setDragActive(true);
+                }}
+                onDragLeave={(e) => {
+                  e.preventDefault();
+                  setDragActive(false);
+                }}
+                onDragOver={(e) => {
+                  e.preventDefault();
+                }}
                 onDrop={handleDrop}
                 className={`relative border-2 border-dashed rounded-lg p-8 text-center transition-all ${
-                  dragActive ? "border-emerald-500 bg-emerald-50" : "border-slate-300 bg-slate-50 hover:border-slate-400"
+                  dragActive
+                    ? "border-emerald-500 bg-emerald-50"
+                    : "border-slate-300 bg-slate-50 hover:border-slate-400"
                 }`}
               >
                 {/* 4. Update Input to restrict file types in the browser dialog */}
                 <input
                   type="file"
                   multiple
-                  accept=".pdf,.doc,.docx" 
+                  accept=".pdf,.doc,.docx"
                   onChange={(e) => handleFiles(e.target.files)}
                   className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                 />
