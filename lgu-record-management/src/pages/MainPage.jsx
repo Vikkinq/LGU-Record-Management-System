@@ -1,15 +1,20 @@
 import { useAuth } from "../context/AuthContext";
 import { useState, useEffect, useMemo } from "react";
+
 import Navbar from "../components/layouts/Navbar";
 import Sidebar from "../components/layouts/Sidebar";
 import MainContent from "../components/Main/MainContent";
+
+import MobileBottomNav from "../components/layouts/MobileBottomNav";
+import MobileSidebar from "../components/layouts/MobileSidebar";
+
 import AddRecordDialog from "../components/Modal/AddRecordModal";
+import EditRecordModal from "../components/Modal/EditRecordModal";
 
 import { collection, query, where, orderBy, onSnapshot, deleteDoc, doc } from "firebase/firestore";
 import { ref, deleteObject } from "firebase/storage";
 import { db, storage } from "../firebase/firebase";
 
-import EditRecordModal from "../components/Modal/EditRecordModal";
 import { uploadFileToStorage, saveFileRecord, updateFileRecord } from "../services/file.services";
 
 export default function MainPage() {
@@ -19,19 +24,22 @@ export default function MainPage() {
   const [sortBy, setSortBy] = useState("date");
   const [filters, setFilters] = useState({ ordinances: true, resolutions: true });
   const [activeMenu, setActiveMenu] = useState("ordinances");
-  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const [documents, setDocuments] = useState([]);
   const [loadingDocs, setLoadingDocs] = useState(true);
 
   const [showAddRecordDialog, setShowAddRecordDialog] = useState(false);
-  const [isUploading, setIsUploading] = useState(false);
-
   const [showEditRecordDialog, setShowEditRecordDialog] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(null);
+
+  const [isUploading, setIsUploading] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
 
-  console.log(userRole);
+  // Mobile UI
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeBottomTab, setActiveBottomTab] = useState("home");
+
+  /* ---------------------- CRUD ---------------------- */
 
   const handleAddRecord = async (formData) => {
     if (!currentUser) {
@@ -166,56 +174,78 @@ export default function MainPage() {
     return () => unsub();
   }, [activeMenu]);
 
+  /* ---------------------- RENDER ---------------------- */
+
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="h-screen bg-gray-100 overflow-hidden">
+      {/* Desktop Sidebar */}
       <Sidebar
         activeMenu={activeMenu}
         setActiveMenu={setActiveMenu}
-        sidebarOpen={sidebarOpen}
         onAddRecord={() => setShowAddRecordDialog(true)}
+        userData={currentUser}
+        userRole={userRole}
+        className="hidden lg:flex"
+      />
+
+      {/* Top Navbar */}
+      <Navbar
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        sortBy={sortBy}
+        setSortBy={setSortBy}
+        setFilters={setFilters}
+        filters={filters}
+      />
+
+      {/* Main Content */}
+      <MainContent
+        documents={processedDocuments}
+        loading={loadingDocs}
+        activeMenu={activeMenu}
+        onEdit={(r) => {
+          setSelectedRecord(r);
+          setShowEditRecordDialog(true);
+        }}
+        onDelete={handleDeleteRecord}
+      />
+
+      {/* Mobile UI */}
+      <MobileBottomNav
+        active={activeBottomTab}
+        setActive={setActiveBottomTab}
+        activeMenu={activeMenu}
+        onAdd={() => setShowAddRecordDialog(true)}
+        onMenu={() => setMobileMenuOpen(true)}
+      />
+
+      <MobileSidebar
+        open={mobileMenuOpen}
+        setActiveMenu={setActiveMenu}
+        onClose={() => setMobileMenuOpen(false)}
         userData={currentUser}
         userRole={userRole}
       />
 
-      <div className="flex flex-col flex-1">
-        <Navbar
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          sortBy={sortBy}
-          setSortBy={setSortBy}
-          setFilters={setFilters}
-          filters={filters}
+      {/* Modals */}
+      {showAddRecordDialog && (
+        <AddRecordDialog
+          isOpen
+          onClose={() => setShowAddRecordDialog(false)}
+          onSubmit={handleAddRecord}
+          isLoading={isUploading}
         />
+      )}
 
-        {/* 5. Pass onEdit to MainContent */}
-        <MainContent
-          documents={processedDocuments} // processed via useMemo
-          loading={loadingDocs} // tracks Firestore fetching
-          activeMenu={activeMenu}
-          onEdit={handleEditClick}
-          onDelete={handleDeleteRecord} // delete handler lifted to MainPage
+      {showEditRecordDialog && (
+        <EditRecordModal
+          isOpen
+          record={selectedRecord}
+          onClose={() => setShowEditRecordDialog(false)}
+          onUpdate={handleUpdateRecord}
+          isLoading={isUpdating}
         />
-
-        {showAddRecordDialog && (
-          <AddRecordDialog
-            isOpen={showAddRecordDialog}
-            onClose={() => setShowAddRecordDialog(false)}
-            onSubmit={handleAddRecord}
-            isLoading={isUploading}
-          />
-        )}
-
-        {/* 6. RENDER EDIT MODAL */}
-        {showEditRecordDialog && (
-          <EditRecordModal
-            isOpen={showEditRecordDialog}
-            onClose={() => setShowEditRecordDialog(false)}
-            onUpdate={handleUpdateRecord}
-            record={selectedRecord}
-            isLoading={isUpdating}
-          />
-        )}
-      </div>
+      )}
     </div>
   );
 }

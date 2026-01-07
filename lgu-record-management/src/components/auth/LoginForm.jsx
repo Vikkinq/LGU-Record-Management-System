@@ -28,18 +28,20 @@ export default function LoginPage() {
     } finally {
       setLoading(false);
     }
-  }; 
+  };
 
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-700 via-slate-600 to-slate-800 flex items-center justify-center p-4">
       <div className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
         {/* Left Section */}
         <div className="hidden md:flex justify-center items-center">
-          <div className="w-48 h-48 rounded-full bg-linear-to-br from-slate-400 to-slate-300 shadow-2xl flex items-center justify-center">
-            <svg className="w-24 h-24 text-slate-500" fill="currentColor" viewBox="0 0 24 24">
-              <circle cx="12" cy="8" r="4" />
-              <path d="M 12 14 C 7 14 3 16.5 3 20 L 21 20 C 21 16.5 17 14 12 14 Z" />
-            </svg>
+          <div className="w-48 h-48 rounded-full overflow-hidden shadow-2xl bg-slate-200">
+            <img
+              src="https://scontent.fcgy2-1.fna.fbcdn.net/v/t1.15752-9/514052846_1277406307075945_3903648811279742043_n.png?_nc_cat=102&ccb=1-7&_nc_sid=9f807c&_nc_eui2=AeFEvsqz829AN22rL7ol6Br32rrkB-xM3IrauuQH7Ezcil2KyuKp6LAeGn6qsdEwcqpYEdjeKvD8VsxwyAhM9L44&_nc_ohc=VAHKWgna_r8Q7kNvwG5SckN&_nc_oc=Adkw7J0DIuIUVWfF6yowa1bdZdGEJ-pedWERvS7GKEat2EGP-IeEYxl3uUrY0AA1438&_nc_zt=23&_nc_ht=scontent.fcgy2-1.fna&oh=03_Q7cD4QFOMvZF6PI4ZSsUghMj8gUR2yONkMSEGqjWUT-I5Hgr2A&oe=6985C260"
+              alt="User Avatar"
+              className="w-full h-full object-cover"
+              loading="lazy"
+            />
           </div>
         </div>
 

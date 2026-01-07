@@ -7,7 +7,7 @@ export default function MainContent({ documents, loading, activeMenu, onEdit, on
   const headers = [
     `${labelPrefix} Number`,
     `${labelPrefix} Title`,
-    `${labelPrefix} Date`,
+    `Approval Date`,
     "Expiry Date",
     "Sponsor",
     "Committee",
@@ -16,7 +16,13 @@ export default function MainContent({ documents, loading, activeMenu, onEdit, on
   ];
 
   return (
-    <main className="flex-1 ml-64 mt-20 overflow-auto p-6">
+    <main
+      className="
+        pt-20 px-4 pb-24 mt-8
+        lg:ml-64 lg:px-6 lg:pb-6
+        overflow-auto h-full
+      "
+    >
       <div className="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
