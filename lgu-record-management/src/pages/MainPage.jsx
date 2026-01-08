@@ -8,6 +8,8 @@ import MainContent from "../components/Main/MainContent";
 import MobileBottomNav from "../components/layouts/MobileBottomNav";
 import MobileSidebar from "../components/layouts/MobileSidebar";
 
+import LoadingSpinner from "../components/general/LoadingSpinner";
+
 import AddRecordDialog from "../components/Modal/AddRecordModal";
 import EditRecordModal from "../components/Modal/EditRecordModal";
 
@@ -178,6 +180,7 @@ export default function MainPage() {
 
   return (
     <div className="h-screen bg-gray-100 overflow-hidden">
+      {loadingDocs && <LoadingSpinner label="Loading Records...." />}
       {/* Desktop Sidebar */}
       <Sidebar
         activeMenu={activeMenu}
