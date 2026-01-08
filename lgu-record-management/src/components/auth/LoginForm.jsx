@@ -3,6 +3,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { loginWithEmail } from "../../services/auth.services";
 import { createUserProfile } from "../../services/user.services";
+import LoadingSpinner from "../general/LoadingSpinner";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -114,6 +115,8 @@ export default function LoginPage() {
           <p className="text-center text-xs text-gray-500 mt-8">© 2025 All rights reserved</p>
         </div>
       </div>
+
+      {loading && <LoadingSpinner label="Logging In..." />}
     </div>
   );
 }

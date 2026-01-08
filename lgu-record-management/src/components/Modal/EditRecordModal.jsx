@@ -1,5 +1,6 @@
 import { X, Calendar, User, Hash, Users, Type, Save, Upload, FileText } from "lucide-react";
 import { useState, useEffect } from "react";
+import LoadingSpinner from "../general/LoadingSpinner";
 
 export default function EditRecordModal({ isOpen, onClose, onUpdate, record, isLoading }) {
   const [formData, setFormData] = useState({
@@ -207,6 +208,7 @@ export default function EditRecordModal({ isOpen, onClose, onUpdate, record, isL
           </button>
         </div>
       </div>
+      {isLoading && <LoadingSpinner label="Updating Record..." />}
     </div>
   );
 }

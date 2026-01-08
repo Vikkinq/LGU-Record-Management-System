@@ -40,7 +40,7 @@ export default function Sidebar({ activeMenu, setActiveMenu, onAddRecord, userDa
       <div className="px-4 py-6 mt-4">
         <button
           onClick={onAddRecord}
-          className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg font-semibold hover:from-cyan-600 hover:to-blue-700 transition-all shadow-md"
+          className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-linear-to-r from-cyan-500 to-blue-600 text-white rounded-lg font-semibold hover:from-cyan-600 hover:to-blue-700 transition-all shadow-md"
         >
           <Plus className="w-5 h-5" />
           Add Record

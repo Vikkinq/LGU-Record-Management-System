@@ -1,6 +1,7 @@
 import { X, Upload, File, Calendar, User, Hash, Users, Type, Eye } from "lucide-react";
 import { useState } from "react";
 import { ALLOWED_FILE_TYPES } from "../../constants/file.constants";
+import LoadingSpinner from "../general/LoadingSpinner";
 
 export default function AddRecordModal({ isOpen, onClose, onSubmit, isLoading }) {
   const [category, setCategory] = useState("ordinances");
@@ -224,7 +225,7 @@ export default function AddRecordModal({ isOpen, onClose, onSubmit, isLoading })
                     >
                       <div className="flex items-center gap-2 overflow-hidden">
                         <File className="w-4 h-4 text-slate-500 shrink-0" />
-                        <span className="truncate max-w-[180px] md:max-w-[400px]">{file.name}</span>
+                        <span className="truncate max-w-45 md:max-w-100">{file.name}</span>
                       </div>
                       <button
                         type="button"
@@ -264,6 +265,7 @@ export default function AddRecordModal({ isOpen, onClose, onSubmit, isLoading })
           </button>
         </div>
       </div>
+      {isLoading && <LoadingSpinner label="Adding Record..." />}
     </div>
   );
 }
