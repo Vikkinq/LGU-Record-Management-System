@@ -35,7 +35,7 @@ export default function Sidebar({ activeMenu, setActiveMenu, onAddRecord, userDa
   const handleLogout = () => logoutUser();
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-64 bg-slate-800 text-white pt-20 z-30 flex flex-col shadow-lg">
+    <aside className="fixed left-0 top-0 h-screen w-64 bg-slate-800 text-white pt-20 z-30 flex-col shadow-lg hidden lg:flex">
       {/* Add Record Button */}
       <div className="px-4 py-6 mt-4">
         <button
