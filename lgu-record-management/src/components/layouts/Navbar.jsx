@@ -16,7 +16,7 @@ export default function Navbar({ searchQuery, setSearchQuery, sortBy, setSortBy,
             className="w-full h-full object-cover"
           />
         </div>
-        <span className="font-semibold text-lg md:text-xl text-white">Panay LGU | Portal</span>
+        <span className="font-semibold text-lg md:text-xl text-white">Panay LGU</span>
       </div>
 
       {/* Desktop: Search + Sort + Filters */}
