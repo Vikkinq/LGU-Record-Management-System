@@ -1,5 +1,6 @@
 import { X, Upload, File, Calendar, User, Hash, Users, Type, Eye } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
 import { ALLOWED_FILE_TYPES } from "../../constants/file.constants";
 import LoadingSpinner from "../general/LoadingSpinner";
 
@@ -58,6 +59,20 @@ export default function AddRecordModal({ isOpen, onClose, onSubmit, isLoading })
     setExpiryDate("");
     setCategory("ordinances");
   };
+
+  useEffect(() => {
+    if (!date) {
+      setExpiryDate("");
+      return;
+    }
+
+    const approvedDate = new Date(date);
+    approvedDate.setFullYear(approvedDate.getFullYear() + 5);
+
+    // Format to YYYY-MM-DD for <input type="date">
+    const formattedExpiry = approvedDate.toISOString().split("T")[0];
+    setExpiryDate(formattedExpiry);
+  }, [date]);
 
   return (
     <div className="fixed inset-0 bg-transparent bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
@@ -135,14 +150,14 @@ export default function AddRecordModal({ isOpen, onClose, onSubmit, isLoading })
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-2">Expiry Date (Optional)</label>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">Expiry Date (Auto-generated)</label>
                 <div className="relative">
                   <Calendar className="absolute left-3 top-2.5 w-4 h-4 text-red-300" />
                   <input
                     type="date"
                     value={expiryDate}
-                    onChange={(e) => setExpiryDate(e.target.value)}
-                    className="w-full pl-9 pr-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
+                    disabled
+                    className="w-full pl-9 pr-4 py-2.5 border border-slate-300 rounded-lg bg-slate-100 text-slate-600 cursor-not-allowed"
                   />
                 </div>
               </div>
