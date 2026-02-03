@@ -37,6 +37,8 @@ export default function MainPage() {
   const [isUploading, setIsUploading] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
 
+  const [expiryFilter, setExpiryFilter] = useState("all");
+
   // Mobile UI
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeBottomTab, setActiveBottomTab] = useState("home");
@@ -72,7 +74,7 @@ export default function MainPage() {
             committee,
             expiryDate,
           },
-          currentUser
+          currentUser,
         );
       }
 
@@ -142,8 +144,24 @@ export default function MainPage() {
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
       result = result.filter((doc) =>
-        [doc.number, doc.title, doc.sponsor, doc.committee, doc.fileName].join(" ").toLowerCase().includes(q)
+        [doc.number, doc.title, doc.sponsor, doc.committee, doc.fileName].join(" ").toLowerCase().includes(q),
       );
+    }
+
+    // Expiry filter
+    if (expiryFilter !== "all") {
+      const today = new Date();
+
+      result = result.filter((doc) => {
+        if (!doc.expiryDate) return false;
+
+        const isExpired = new Date(doc.expiryDate) < today;
+
+        if (expiryFilter === "expired") return isExpired;
+        if (expiryFilter === "active") return !isExpired;
+
+        return true;
+      });
     }
 
     result.sort((a, b) => {
@@ -159,7 +177,7 @@ export default function MainPage() {
     });
 
     return result;
-  }, [documents, searchQuery, sortBy, filters]);
+  }, [documents, searchQuery, sortBy, filters, expiryFilter]);
 
   useEffect(() => {
     const q = query(collection(db, "documents"), where("category", "==", activeMenu), orderBy("uploadedAt", "desc"));
@@ -170,7 +188,7 @@ export default function MainPage() {
         setDocuments(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
         setLoadingDocs(false);
       },
-      () => setLoadingDocs(false)
+      () => setLoadingDocs(false),
     );
 
     return () => unsub();
@@ -197,8 +215,8 @@ export default function MainPage() {
         setSearchQuery={setSearchQuery}
         sortBy={sortBy}
         setSortBy={setSortBy}
-        setFilters={setFilters}
-        filters={filters}
+        expiryFilter={expiryFilter}
+        setExpiryFilter={setExpiryFilter}
       />
 
       {/* Main Content */}

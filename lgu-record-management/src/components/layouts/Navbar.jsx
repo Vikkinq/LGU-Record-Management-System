@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Search, ChevronDown, Sliders, Menu, X } from "lucide-react";
 
-export default function Navbar({ searchQuery, setSearchQuery, sortBy, setSortBy, setFilters, filters }) {
+export default function Navbar({ searchQuery, setSearchQuery, sortBy, setSortBy, setExpiryFilter, expiryFilter }) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
@@ -48,13 +48,15 @@ export default function Navbar({ searchQuery, setSearchQuery, sortBy, setSortBy,
         </div>
 
         {/* Filters */}
-        <button
-          className="flex items-center gap-2 px-4 py-2 rounded bg-white text-gray-700 text-sm md:text-base font-medium hover:bg-gray-100 transition-colors"
-          onClick={() => setFilters(!filters)}
+        <select
+          className="px-4 py-2 rounded bg-white text-gray-700 text-sm md:text-base font-medium border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          value={expiryFilter}
+          onChange={(e) => setExpiryFilter(e.target.value)}
         >
-          <Sliders className="w-4 h-4" />
-          Filters
-        </button>
+          <option value="all">All Records</option>
+          <option value="expired">Expired</option>
+          <option value="active">Active</option>
+        </select>
       </div>
 
       {/* Mobile: Menu Toggle */}
@@ -88,13 +90,15 @@ export default function Navbar({ searchQuery, setSearchQuery, sortBy, setSortBy,
             <option value="sponsor">Sort by: Sponsor</option>
           </select>
 
-          <button
-            className="flex items-center gap-2 px-4 py-2 rounded bg-white text-gray-700 text-sm font-medium hover:bg-gray-100 transition-colors"
-            onClick={() => setFilters(!filters)}
+          <select
+            value={expiryFilter}
+            onChange={(e) => setExpiryFilter(e.target.value)}
+            className="w-full px-4 py-2 rounded bg-white text-gray-700 text-sm font-medium border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            <Sliders className="w-4 h-4" />
-            Filters
-          </button>
+            <option value="all">All Records</option>
+            <option value="expired">Expired</option>
+            <option value="active">Active</option>
+          </select>
         </div>
       )}
     </nav>
