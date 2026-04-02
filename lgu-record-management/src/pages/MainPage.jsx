@@ -148,6 +148,13 @@ export default function MainPage() {
     });
   };
 
+  const handleShowRecord = async (fileName, category) => {
+    await logActivity("RECORD_VIEWED", {
+      targetName: fileName,
+      details: category,
+    });
+  };
+
   const processedDocuments = useMemo(() => {
     let result = [...documents];
 
@@ -245,6 +252,7 @@ export default function MainPage() {
           setShowEditRecordDialog(true);
         }}
         onDelete={handleDeleteRecord}
+        onShow={handleShowRecord}
         userRole={userRole}
       />
 

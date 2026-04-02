@@ -1,7 +1,7 @@
 // MainTable.jsx
 import { Pencil, Eye, Trash2 } from "lucide-react";
 
-export default function MainTable({ documents, onEdit, onDelete, userRole }) {
+export default function MainTable({ documents, onEdit, onDelete, userRole, onShow }) {
   const today = new Date();
 
   return (
@@ -90,6 +90,7 @@ export default function MainTable({ documents, onEdit, onDelete, userRole }) {
 
                 <a
                   href={doc.fileUrl}
+                  onClick={() => onShow(doc.title, doc.category)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="p-2 md:p-2.5 rounded hover:bg-blue-50 transition"

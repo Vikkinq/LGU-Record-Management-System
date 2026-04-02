@@ -5,7 +5,7 @@ import LoadingSpinner from "../components/general/LoadingSpinner";
 
 // ─── Config ───────────────────────────────────────────────────────────────────
 
-const PAGE_SIZE_OPTIONS = [15, 20];
+const PAGE_SIZE_OPTIONS = [20, 50];
 
 const ACTION_META = {
   // Green — creations
@@ -14,13 +14,15 @@ const ACTION_META = {
 
   // Amber — updates / non-destructive
   USER_DISABLED: { label: "User Disabled", color: "amber" },
-  USER_ENABLED: { label: "User Enabled", color: "blue" },
-  ROLE_CHANGED: { label: "Role Changed", color: "amber" },
-  RECORD_UPDATED: { label: "Record Updated", color: "amber" },
+  USER_ENABLED: { label: "User Enabled", color: "green" },
+  ROLE_CHANGED: { label: "Role Changed", color: "blue" },
+  RECORD_UPDATED: { label: "Record Updated", color: "blue" },
 
   // Red — deletions
   USER_DELETED: { label: "User Deleted", color: "red" },
   RECORD_DELETED: { label: "Record Deleted", color: "red" },
+
+  RECORD_VIEWED: { label: "Record Viewed", color: "amber" },
 };
 
 const COLOR_CLASSES = {
