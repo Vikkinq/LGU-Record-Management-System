@@ -11,7 +11,7 @@ export default function Navbar({ searchQuery, setSearchQuery, sortBy, setSortBy,
       <div className="flex items-center gap-3 px-4 py-4">
         <div className="w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden bg-white">
           <img
-            src="https://scontent.fcgy2-1.fna.fbcdn.net/v/t1.15752-9/514052846_1277406307075945_3903648811279742043_n.png?_nc_cat=102&ccb=1-7&_nc_sid=9f807c&_nc_eui2=AeFEvsqz829AN22rL7ol6Br32rrkB-xM3IrauuQH7Ezcil2KyuKp6LAeGn6qsdEwcqpYEdjeKvD8VsxwyAhM9L44&_nc_ohc=VAHKWgna_r8Q7kNvwG5SckN&_nc_oc=Adkw7J0DIuIUVWfF6yowa1bdZdGEJ-pedWERvS7GKEat2EGP-IeEYxl3uUrY0AA1438&_nc_zt=23&_nc_ht=scontent.fcgy2-1.fna&oh=03_Q7cD4QFOMvZF6PI4ZSsUghMj8gUR2yONkMSEGqjWUT-I5Hgr2A&oe=6985C260"
+            src="https://scontent.fcgy2-1.fna.fbcdn.net/v/t39.30808-6/577784236_25136480575963085_1706918526497340446_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=1d70fc&_nc_eui2=AeHjR1qg50c_bFffQlcVZ90le7w9G6MNLlF7vD0bow0uUTdXLeBpAh1Dw60C7Q5dbKQnviDk8D-l316SZOXKoS4t&_nc_ohc=9dorHjU0dzEQ7kNvwGClj6F&_nc_oc=Adr-spdR9M-GtIuc1NgxLJJ-LbIbA3USJhK6MBTSNq9O6w4Q2O6IWgK084GsMX4cYfc&_nc_zt=23&_nc_ht=scontent.fcgy2-1.fna&_nc_gid=IzefFVbaeX4m0nvnb7qukA&_nc_ss=7a3a8&oh=00_Af0FxG_ba8mt3-58wx_qX7nxBur9D1nrrGIGeYz56uMTvQ&oe=69D3D1D5"
             alt="Panay LGU Logo"
             className="w-full h-full object-cover"
           />

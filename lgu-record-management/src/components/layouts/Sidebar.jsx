@@ -6,7 +6,11 @@ import { logoutUser } from "../../services/auth.services";
 import { db } from "../../firebase/firebase"; // your firebase config
 import { collection, query, where, getDocs } from "firebase/firestore";
 
+import { useNavigate } from "react-router-dom";
+
 export default function Sidebar({ activeMenu, setActiveMenu, onAddRecord, userData, userRole }) {
+  const navigate = useNavigate();
+
   const menuItems = [
     { id: "ordinances", label: "Ordinances", icon: <FileText className="w-5 h-5" /> },
     { id: "resolutions", label: "Resolutions", icon: <File className="w-5 h-5" /> },
@@ -85,8 +89,8 @@ export default function Sidebar({ activeMenu, setActiveMenu, onAddRecord, userDa
             />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-semibold truncate">{userData.email}</p>
-            <p className="text-xs text-slate-300 capitalize">{userRole}</p>
+            <p className="text-sm font-semibold truncate">{userData?.email || "Loading..."}</p>
+            <p className="text-xs text-slate-300 capitalize">{userRole || "—"}</p>
           </div>
         </div>
 
@@ -99,7 +103,10 @@ export default function Sidebar({ activeMenu, setActiveMenu, onAddRecord, userDa
             Logout
           </button>
           {userRole === "admin" && (
-            <button className="flex items-center justify-center px-3 py-2.5 rounded-lg bg-slate-700 hover:bg-slate-600 transition-colors shadow-sm">
+            <button
+              onClick={() => navigate("/admin")}
+              className="flex items-center justify-center px-3 py-2.5 rounded-lg bg-slate-700 hover:bg-slate-600 transition-colors shadow-sm"
+            >
               <User className="w-4 h-4" />
             </button>
           )}
