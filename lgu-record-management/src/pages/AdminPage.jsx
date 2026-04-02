@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import CreateUserModal from "../components/Modal/CreateUserModal";
 import LoadingSpinner from "../components/general/LoadingSpinner";
 
+import { logActivity } from "../services/logs.services";
+
 const PAGE_SIZE_OPTIONS = [15, 20];
 
 function ConfirmModal({ user, onConfirm, onCancel }) {
@@ -83,6 +85,12 @@ export default function AdminPage() {
     try {
       await updateDoc(doc(db, "users", userId), { role: newRole });
       setUsers((prev) => prev.map((u) => (u.id === userId ? { ...u, role: newRole } : u)));
+
+      const targetUser = users.find((u) => u.id === userId);
+      await logActivity("ROLE_CHANGED", {
+        targetEmail: targetUser?.email,
+        details: `Role → ${newRole}`,
+      });
     } catch (error) {
       console.error("Error updating role:", error);
     }
@@ -94,6 +102,8 @@ export default function AdminPage() {
     try {
       await deleteDoc(doc(db, "users", deleteTarget.id));
       setUsers((prev) => prev.filter((u) => u.id !== deleteTarget.id));
+
+      await logActivity("USER_DELETED", { targetEmail: deleteTarget.email });
       setDeleteTarget(null);
     } catch (err) {
       console.error("Error deleting user:", err);
@@ -102,8 +112,24 @@ export default function AdminPage() {
     }
   };
 
-  const handleUserCreated = (newUser) => {
+  const handleUserCreated = async (newUser) => {
     setUsers((prev) => [newUser, ...prev]);
+    await logActivity("USER_CREATED", { targetEmail: newUser.email });
+  };
+
+  const handleToggleDisable = async (user) => {
+    const newDisabled = !user.disabled;
+    try {
+      await updateDoc(doc(db, "users", user.id), { disabled: newDisabled });
+      setUsers((prev) => prev.map((u) => (u.id === user.id ? { ...u, disabled: newDisabled } : u)));
+
+      // ✅ Add this
+      await logActivity(newDisabled ? "USER_DISABLED" : "USER_ENABLED", {
+        targetEmail: user.email,
+      });
+    } catch (err) {
+      console.error("Error updating disabled status:", err);
+    }
   };
 
   const filtered = useMemo(() => {

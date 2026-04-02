@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { LogOut, Settings, Plus, FileText, File, User } from "lucide-react";
+import { LogOut, Settings, Plus, FileText, File, User, ScrollText } from "lucide-react";
 import { logoutUser } from "../../services/auth.services";
-import { db } from "../../firebase/firebase"; // your firebase config
+import { db } from "../../firebase/firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
 
 import { useNavigate } from "react-router-dom";
@@ -102,13 +102,24 @@ export default function Sidebar({ activeMenu, setActiveMenu, onAddRecord, userDa
             <LogOut className="w-4 h-4" />
             Logout
           </button>
+
           {userRole === "admin" && (
-            <button
-              onClick={() => navigate("/admin")}
-              className="flex items-center justify-center px-3 py-2.5 rounded-lg bg-slate-700 hover:bg-slate-600 transition-colors shadow-sm"
-            >
-              <User className="w-4 h-4" />
-            </button>
+            <>
+              <button
+                onClick={() => navigate("/admin")}
+                title="User Management"
+                className="flex items-center justify-center px-3 py-2.5 rounded-lg bg-slate-700 hover:bg-slate-600 transition-colors shadow-sm"
+              >
+                <User className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => navigate("/logs")}
+                title="Activity Logs"
+                className="flex items-center justify-center px-3 py-2.5 rounded-lg bg-slate-700 hover:bg-slate-600 transition-colors shadow-sm"
+              >
+                <ScrollText className="w-4 h-4" />
+              </button>
+            </>
           )}
         </div>
       </div>

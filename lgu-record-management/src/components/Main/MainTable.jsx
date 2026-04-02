@@ -1,7 +1,7 @@
 // MainTable.jsx
 import { Pencil, Eye, Trash2 } from "lucide-react";
 
-export default function MainTable({ documents, onEdit, onDelete }) {
+export default function MainTable({ documents, onEdit, onDelete, userRole }) {
   const today = new Date();
 
   return (
@@ -78,13 +78,15 @@ export default function MainTable({ documents, onEdit, onDelete }) {
             {/* Actions */}
             <td className="px-3 md:px-4 py-2 md:py-3">
               <div className="flex items-center gap-2 md:gap-3 flex-wrap">
-                <button
-                  onClick={() => onEdit(doc)}
-                  title="Edit"
-                  className="p-2 md:p-2.5 rounded hover:bg-slate-100 transition"
-                >
-                  <Pencil className="w-4 h-4 md:w-5 md:h-5 text-slate-600" />
-                </button>
+                {userRole === "admin" && (
+                  <button
+                    onClick={() => onEdit(doc)}
+                    title="Edit"
+                    className="p-2 md:p-2.5 rounded hover:bg-slate-100 transition"
+                  >
+                    <Pencil className="w-4 h-4 md:w-5 md:h-5 text-slate-600" />
+                  </button>
+                )}
 
                 <a
                   href={doc.fileUrl}
@@ -96,13 +98,15 @@ export default function MainTable({ documents, onEdit, onDelete }) {
                   <Eye className="w-4 h-4 md:w-5 md:h-5 text-blue-600" />
                 </a>
 
-                <button
-                  onClick={() => onDelete(doc.id, doc.fileName, doc.category)}
-                  title="Delete"
-                  className="p-2 md:p-2.5 rounded hover:bg-red-50 transition"
-                >
-                  <Trash2 className="w-4 h-4 md:w-5 md:h-5 text-red-600" />
-                </button>
+                {userRole === "admin" && (
+                  <button
+                    onClick={() => onDelete(doc.id, doc.fileName, doc.category)}
+                    title="Delete"
+                    className="p-2 md:p-2.5 rounded hover:bg-red-50 transition"
+                  >
+                    <Trash2 className="w-4 h-4 md:w-5 md:h-5 text-red-600" />
+                  </button>
+                )}
               </div>
             </td>
           </tr>

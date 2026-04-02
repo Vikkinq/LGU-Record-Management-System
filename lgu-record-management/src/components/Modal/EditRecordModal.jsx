@@ -2,6 +2,8 @@ import { X, Calendar, User, Hash, Users, Type, Save, Upload, FileText } from "lu
 import { useState, useEffect } from "react";
 import LoadingSpinner from "../general/LoadingSpinner";
 
+import { logActivity } from "../../services/logs.services";
+
 export default function EditRecordModal({ isOpen, onClose, onUpdate, record, isLoading }) {
   const [formData, setFormData] = useState({
     category: "ordinances",

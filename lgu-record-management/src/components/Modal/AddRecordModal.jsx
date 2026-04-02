@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { ALLOWED_FILE_TYPES } from "../../constants/file.constants";
 import LoadingSpinner from "../general/LoadingSpinner";
 
+import { logActivity } from "../../services/logs.services";
+
 export default function AddRecordModal({ isOpen, onClose, onSubmit, isLoading }) {
   const [category, setCategory] = useState("ordinances");
   const [files, setFiles] = useState([]);

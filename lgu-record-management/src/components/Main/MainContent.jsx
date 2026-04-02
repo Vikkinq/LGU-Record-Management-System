@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import MainTable from "./MainTable";
 import { FileText, ChevronLeft, ChevronRight } from "lucide-react";
 
-export default function MainContent({ documents, loading, activeMenu, onEdit, onDelete }) {
+export default function MainContent({ documents, loading, activeMenu, onEdit, onDelete, userRole }) {
   const labelPrefix = activeMenu === "resolutions" ? "Resolution" : "Ordinance";
 
   // 🔹 Pagination State
@@ -73,7 +73,7 @@ export default function MainContent({ documents, loading, activeMenu, onEdit, on
                   </td>
                 </tr>
               ) : (
-                <MainTable documents={paginatedDocs} onEdit={onEdit} onDelete={onDelete} />
+                <MainTable documents={paginatedDocs} onEdit={onEdit} onDelete={onDelete} userRole={userRole} />
               )}
             </tbody>
           </table>

@@ -4,6 +4,8 @@ import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { initializeApp, deleteApp, getApp } from "firebase/app";
 import { db, auth } from "../../firebase/firebase";
 
+import { logActivity } from "../../services/logs.services";
+
 const ROLES = [
   {
     value: "staff",

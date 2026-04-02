@@ -6,6 +6,7 @@ import MainPage from "./pages/MainPage";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminPage from "./pages/AdminPage";
+import ActivityLogsPage from "./pages/ActivityLogsPage";
 
 function App() {
   return (
@@ -29,6 +30,15 @@ function App() {
           element={
             <ProtectedRoute allowedRoles={["admin"]}>
               <AdminPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/logs"
+          element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <ActivityLogsPage />
             </ProtectedRoute>
           }
         />

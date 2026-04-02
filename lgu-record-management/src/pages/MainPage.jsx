@@ -9,6 +9,7 @@ import MobileBottomNav from "../components/layouts/MobileBottomNav";
 import MobileSidebar from "../components/layouts/MobileSidebar";
 
 import LoadingSpinner from "../components/general/LoadingSpinner";
+import { logActivity } from "../services/logs.services";
 
 import AddRecordDialog from "../components/Modal/AddRecordModal";
 import EditRecordModal from "../components/Modal/EditRecordModal";
@@ -76,6 +77,11 @@ export default function MainPage() {
           },
           currentUser,
         );
+
+        await logActivity("RECORD_CREATED", {
+          targetName: file.name,
+          details: `${category} — ${title}`,
+        });
       }
 
       alert("Record added successfully!");
@@ -114,6 +120,11 @@ export default function MainPage() {
       // 3. Update Database
       await updateFileRecord(docId, finalData, currentUser);
 
+      await logActivity("RECORD_UPDATED", {
+        targetName: updatedData.title ?? docId,
+        details: `${updatedData.category} — ${updatedData.title}`,
+      });
+
       alert("Record updated successfully!");
       setShowEditRecordDialog(false);
       setSelectedRecord(null);
@@ -130,6 +141,11 @@ export default function MainPage() {
 
     await deleteDoc(doc(db, "documents", id));
     await deleteObject(ref(storage, `${category}/${fileName}`));
+
+    await logActivity("RECORD_DELETED", {
+      targetName: fileName,
+      details: category,
+    });
   };
 
   const processedDocuments = useMemo(() => {
@@ -229,6 +245,7 @@ export default function MainPage() {
           setShowEditRecordDialog(true);
         }}
         onDelete={handleDeleteRecord}
+        userRole={userRole}
       />
 
       {/* Mobile UI */}
