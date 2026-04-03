@@ -12,7 +12,7 @@ export default function MainTable({ documents, onEdit, onDelete, userRole, onSho
         return (
           <tr
             key={doc.id}
-            className={`border-b border-slate-200 last:border-b-0 hover:bg-slate-50 transition-colors ${
+            className={`border-b border-slate-200 last:border-b-0 hover:bg-slate-50 transition-colors cursor-pointer ${
               idx % 2 === 0 ? "bg-white" : "bg-slate-50"
             }`}
           >
@@ -82,7 +82,7 @@ export default function MainTable({ documents, onEdit, onDelete, userRole, onSho
                   <button
                     onClick={() => onEdit(doc)}
                     title="Edit"
-                    className="p-2 md:p-2.5 rounded hover:bg-slate-100 transition"
+                    className="p-2 md:p-2.5 rounded hover:bg-slate-100 transition cursor-pointer"
                   >
                     <Pencil className="w-4 h-4 md:w-5 md:h-5 text-slate-600" />
                   </button>
@@ -93,13 +93,13 @@ export default function MainTable({ documents, onEdit, onDelete, userRole, onSho
                   onClick={() => onShow(doc.title, doc.category)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2 md:p-2.5 rounded hover:bg-blue-50 transition"
+                  className="p-2 md:p-2.5 rounded hover:bg-blue-50 transition cursor-pointer"
                   title="View"
                 >
                   <Eye className="w-4 h-4 md:w-5 md:h-5 text-blue-600" />
                 </a>
 
-                {userRole === "admin" && (
+                {/* {userRole === "admin" && (
                   <button
                     onClick={() => onDelete(doc.id, doc.fileName, doc.category)}
                     title="Delete"
@@ -107,7 +107,7 @@ export default function MainTable({ documents, onEdit, onDelete, userRole, onSho
                   >
                     <Trash2 className="w-4 h-4 md:w-5 md:h-5 text-red-600" />
                   </button>
-                )}
+                )} */}
               </div>
             </td>
           </tr>

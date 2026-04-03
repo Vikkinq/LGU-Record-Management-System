@@ -1,20 +1,14 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { LogOut, Settings, Plus, FileText, File, User, ScrollText } from "lucide-react";
+import { LogOut, Plus, FileText, File, User, ScrollText } from "lucide-react";
 import { logoutUser } from "../../services/auth.services";
 import { db } from "../../firebase/firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
-
 import { useNavigate } from "react-router-dom";
 
 export default function Sidebar({ activeMenu, setActiveMenu, onAddRecord, userData, userRole }) {
   const navigate = useNavigate();
-
-  const menuItems = [
-    { id: "ordinances", label: "Ordinances", icon: <FileText className="w-5 h-5" /> },
-    { id: "resolutions", label: "Resolutions", icon: <File className="w-5 h-5" /> },
-  ];
 
   const [docCounts, setDocCounts] = useState({ ordinances: 0, resolutions: 0 });
 
@@ -24,7 +18,6 @@ export default function Sidebar({ activeMenu, setActiveMenu, onAddRecord, userDa
         const colRef = collection(db, "documents");
         const ordinancesSnap = await getDocs(query(colRef, where("category", "==", "ordinances")));
         const resolutionsSnap = await getDocs(query(colRef, where("category", "==", "resolutions")));
-
         setDocCounts({
           ordinances: ordinancesSnap.size,
           resolutions: resolutionsSnap.size,
@@ -38,40 +31,70 @@ export default function Sidebar({ activeMenu, setActiveMenu, onAddRecord, userDa
 
   const handleLogout = () => logoutUser();
 
+  const mainMenu = [
+    { id: "ordinances", label: "Ordinances", icon: <FileText className="w-4 h-4" />, count: docCounts.ordinances },
+    { id: "resolutions", label: "Resolutions", icon: <File className="w-4 h-4" />, count: docCounts.resolutions },
+  ];
+
+  const adminMenu = [
+    { id: "admin", label: "User Management", icon: <User className="w-4 h-4" />, path: "/admin" },
+    { id: "logs", label: "Activity Logs", icon: <ScrollText className="w-4 h-4" />, path: "/logs" },
+  ];
+
   return (
-    <aside className="fixed left-0 top-0 h-screen w-64 bg-slate-800 text-white pt-20 z-30 flex-col shadow-lg hidden lg:flex">
-      {/* Add Record Button */}
-      <div className="px-4 py-6 mt-4">
+    <aside className="fixed left-0 top-0 h-screen w-64 bg-slate-800 text-white pt-22 z-30 flex flex-col shadow-lg hidden lg:flex">
+      {/* Add Record */}
+      <div className="px-4 pt-6 pb-4">
         <button
           onClick={onAddRecord}
-          className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-linear-to-r from-cyan-500 to-blue-600 text-white rounded-lg font-semibold hover:from-cyan-600 hover:to-blue-700 transition-all shadow-md"
+          className="cursor-pointer w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg font-semibold hover:from-cyan-600 hover:to-blue-700 transition-all shadow-md text-sm"
         >
-          <Plus className="w-5 h-5" />
+          <Plus className="w-4 h-4" />
           Add Record
         </button>
       </div>
 
-      {/* Menu Navigation */}
-      <nav className="flex-1 px-4 py-4 space-y-2">
-        {menuItems.map((item) => (
+      {/* Main Nav */}
+      <nav className="flex-1 px-4 overflow-y-auto space-y-1">
+        <p className="text-[10px] font-semibold uppercase tracking-widest text-slate-500 px-2 mb-2">Records</p>
+
+        {mainMenu.map((item) => (
           <button
             key={item.id}
             onClick={() => setActiveMenu(item.id)}
-            className={`w-full text-left px-4 py-3 rounded-lg transition-all flex items-center justify-between ${
+            className={`cursor-pointer w-full text-left px-3 py-2.5 rounded-lg transition-all flex items-center justify-between ${
               activeMenu === item.id
-                ? "bg-slate-700 border-l-4 border-emerald-500 text-white shadow-inner"
-                : "text-slate-200 hover:bg-slate-700 hover:text-white"
+                ? "bg-slate-700 border-l-4 border-emerald-500 text-white"
+                : "text-slate-300 hover:bg-slate-700 hover:text-white"
             }`}
           >
             <div className="flex items-center gap-3">
               {item.icon}
-              <span className="font-medium">{item.label}</span>
+              <span className="text-sm font-medium">{item.label}</span>
             </div>
-            <span className="text-xs bg-slate-700 px-2 py-0.5 rounded-full text-emerald-400 font-semibold">
-              {docCounts[item.id]}
+            <span className="text-[11px] bg-slate-600 px-2 py-0.5 rounded-full text-emerald-400 font-semibold">
+              {item.count}
             </span>
           </button>
         ))}
+
+        {userRole === "admin" && (
+          <>
+            <div className="pt-4 pb-2">
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-slate-500 px-2">Admin</p>
+            </div>
+            {adminMenu.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => navigate(item.path)}
+                className="cursor-pointer w-full text-left px-3 py-2.5 rounded-lg transition-all flex items-center gap-3 text-slate-300 hover:bg-slate-700 hover:text-white"
+              >
+                {item.icon}
+                <span className="text-sm font-medium">{item.label}</span>
+              </button>
+            ))}
+          </>
+        )}
       </nav>
 
       {/* User Profile & Actions */}
@@ -97,30 +120,11 @@ export default function Sidebar({ activeMenu, setActiveMenu, onAddRecord, userDa
         <div className="flex gap-2">
           <button
             onClick={handleLogout}
-            className="flex-1 flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 transition-colors text-sm font-medium shadow-sm"
+            className="cursor-pointer flex-1 flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 transition-colors text-sm font-medium shadow-sm"
           >
             <LogOut className="w-4 h-4" />
             Logout
           </button>
-
-          {userRole === "admin" && (
-            <>
-              <button
-                onClick={() => navigate("/admin")}
-                title="User Management"
-                className="flex items-center justify-center px-3 py-2.5 rounded-lg bg-slate-700 hover:bg-slate-600 transition-colors shadow-sm"
-              >
-                <User className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => navigate("/logs")}
-                title="Activity Logs"
-                className="flex items-center justify-center px-3 py-2.5 rounded-lg bg-slate-700 hover:bg-slate-600 transition-colors shadow-sm"
-              >
-                <ScrollText className="w-4 h-4" />
-              </button>
-            </>
-          )}
         </div>
       </div>
     </aside>

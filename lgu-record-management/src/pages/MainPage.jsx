@@ -261,6 +261,7 @@ export default function MainPage() {
         active={activeBottomTab}
         setActive={setActiveBottomTab}
         activeMenu={activeMenu}
+        userRole={userRole}
         onAdd={() => setShowAddRecordDialog(true)}
         onMenu={() => setMobileMenuOpen(true)}
       />
